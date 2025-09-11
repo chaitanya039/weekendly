@@ -1,0 +1,47 @@
+export const THEMES = {
+  family: {
+    key: "family",
+    label: "Family",
+    gradFrom: "#FB8C00",
+    gradTo: "#E65100",
+    accent: "#FFB74D",
+    headline: "#212121",
+    body: "#424242",
+    btnBg: "#E65100",
+    btnText: "#FFFFFF",
+    hero: "../src/assets/hero-family.png",
+    glowFrom: "#FF5722",
+    glowTo: "#FF9800",
+    circleColor: "#FFB74D", // Glow circle color for the Family theme
+  },
+  adventure: {
+    key: "adventure",
+    label: "Adventure",
+    gradFrom: "#388E3C",
+    gradTo: "#1B5E20",
+    accent: "#A5D6A7",
+    headline: "#212121",
+    body: "#424242",
+    btnBg: "#2E7D32",
+    btnText: "#FFFFFF",
+    hero: "../src/assets/hero-adventure.png",
+    glowFrom: "#66BB6A",
+    glowTo: "#388E3C",
+    circleColor: "#4CAF50", // Glow circle color for the Adventure theme
+  },
+  lazy: {
+    key: "lazy",
+    label: "Lazy",
+    gradFrom: "#0288D1",
+    gradTo: "#01579B",
+    accent: "#4FC3F7",
+    headline: "#212121",
+    body: "#424242",
+    btnBg: "#0277BD",
+    btnText: "#FFFFFF",
+    hero: "../src/assets/hero-lazy.png",
+    glowFrom: "#03A9F4",
+    glowTo: "#0288D1",
+    circleColor: "#4FC3F7", // Glow circle color for the Lazy theme
+  },
+};
