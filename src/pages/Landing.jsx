@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/common/Navbar";
 import { useTheme } from "../theme/useTheme";
 import Footer from "../components/common/Footer";
+import { heroImages } from "../utils/HeroImages";
+
 
 // Small inline component for the bordered pill above the H1
 function TaglinePill({ text, icon = "✈️" }) {
@@ -9,7 +11,7 @@ function TaglinePill({ text, icon = "✈️" }) {
     <div
       className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold"
       style={{
-        background: "rgba(255, 255, 255, 0.7)", // Lighter background
+        background: "rgba(255, 255, 255, 0.7)", 
         border: `1.5px solid black`,
         color: "black",
         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
@@ -21,7 +23,7 @@ function TaglinePill({ text, icon = "✈️" }) {
   );
 }
 
-export default function Landing() {
+const Landing = () => {
   const { theme } = useTheme();
 
   const features = [
@@ -41,6 +43,10 @@ export default function Landing() {
       icon: "🎛️",
     },
   ];
+  
+  const imageKey = `/src/assets/${theme.hero}.png`;
+  const imageSrc = heroImages[imageKey]?.default;
+  
 
   return (
     <div
@@ -154,7 +160,7 @@ export default function Landing() {
           {/* Right: Hero PNG */}
           <div className="flex-1 flex justify-center md:justify-end relative">
             <img
-              src={theme.hero}
+              src={imageSrc}
               alt={`${theme.label} hero`}
               className="w-full max-w-[600px] h-auto object-contain relative z-10"
               style={{ borderRadius: 0, background: "transparent" }}
@@ -269,3 +275,5 @@ export default function Landing() {
     </div>
   );
 }
+
+export default Landing;

@@ -1,0 +1,1 @@
+export const heroImages = import.meta.glob(`/src/assets/*png`, { eager: true });
