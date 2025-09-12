@@ -23,9 +23,10 @@ import { useDroppable } from "@dnd-kit/core";
 import ScheduledActivityCard from "./ScheduledActivityCard";
 import ScheduleModal from "./ScheduleModal";
 import { fetchActivities } from "../../store/slices/activitySlice";
+import { fetchHolidays } from "../../store/slices/weekendSlice";
+import ExportPlanner from "../ExportPlanner";
 
-const weekendDays = ["Saturday", "Sunday"];
-
+// 📌 Column for each day
 function DayColumn({
   day,
   theme,
@@ -98,6 +99,11 @@ export default function WeekendBoard() {
   const scheduledActivities = useSelector((state) => state.scheduled.items);
   const activities = useSelector((state) => state.activities.items);
 
+  // ✅ Get weekend + holiday data from Redux
+  const { weekendDays, holidays, status } = useSelector(
+    (state) => state.weekend
+  );
+
   const [showModal, setShowModal] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState(null);
 
@@ -105,6 +111,7 @@ export default function WeekendBoard() {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
 
+  // Group scheduled activities by day
   const groupedByDay = useMemo(() => {
     return weekendDays.reduce((acc, day) => {
       acc[day] = scheduledActivities
@@ -112,13 +119,27 @@ export default function WeekendBoard() {
         .sort((a, b) => String(a.startTime).localeCompare(String(b.startTime)));
       return acc;
     }, {});
-  }, [scheduledActivities]);
+  }, [scheduledActivities, weekendDays]);
 
+  // Initial data load
   useEffect(() => {
     dispatch(fetchScheduledActivities());
     dispatch(fetchActivities());
+    dispatch(fetchHolidays({ countryCode: "IN", year: 2025 }));
   }, [dispatch]);
 
+  // ✅ Helper: detect which holidays fall in this weekend
+  const matchingHolidays = useMemo(() => {
+    if (!holidays?.length) return [];
+    return holidays.filter((h) => {
+      const holidayDay = new Date(h.date).toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+      return weekendDays.includes(holidayDay);
+    });
+  }, [holidays, weekendDays]);
+
+  // Helpers for drag-and-drop
   const getTargetDayFromOver = (over) => {
     if (!over) return null;
     if (weekendDays.includes(over.id)) return over.id;
@@ -139,11 +160,10 @@ export default function WeekendBoard() {
     return date.toTimeString().slice(0, 5);
   }
 
-  // ✅ Recalculate times and dispatch updates
   function recalcDayTimes(dayActivities, day, dispatch, dayStart = "09:00") {
     if (!dayActivities.length) return;
 
-    let cursor = dayStart; // Start of the day
+    let cursor = dayStart;
 
     dayActivities.forEach((act) => {
       const duration =
@@ -176,14 +196,12 @@ export default function WeekendBoard() {
     if (!dragged) return;
 
     const sourceDay = dragged.day;
-    const targetDay = getTargetDayFromOver(over); // Detect drop column
+    const targetDay = getTargetDayFromOver(over);
     if (!targetDay) return;
 
-    // Clone activities in target day
     let targetActivities = [...groupedByDay[targetDay]];
 
     if (sourceDay === targetDay) {
-      // 🔹 Reorder within the same day
       const oldIndex = targetActivities.findIndex((a) => a.id === activeId);
       const newIndex = targetActivities.findIndex((a) => a.id === overId);
 
@@ -191,7 +209,6 @@ export default function WeekendBoard() {
         targetActivities = arrayMove(targetActivities, oldIndex, newIndex);
       }
     } else {
-      // 🔹 Move across days
       const sourceActivities = groupedByDay[sourceDay].filter(
         (a) => a.id !== activeId
       );
@@ -203,11 +220,9 @@ export default function WeekendBoard() {
         { ...dragged, day: targetDay }
       );
 
-      // Recalculate times for source day
       recalcDayTimes(sourceActivities, sourceDay, dispatch);
     }
 
-    // Recalculate times for target day
     recalcDayTimes(targetActivities, targetDay, dispatch);
   };
 
@@ -227,23 +242,41 @@ export default function WeekendBoard() {
 
   return (
     <div
-      className="p-8 rounded-3xl transition-all shadow-sm"
+      className="p-8 rounded-3xl transition-all"
+      id="planner-export"
       style={{
         background: `radial-gradient(circle at center, ${theme.circleColor}55, ${theme.glowFrom}22, ${theme.glowTo}11)`,
         backdropFilter: "blur(16px)",
         boxShadow:
-          "inset 0 2px 6px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.1)",
+          "inset 0 2px 6px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.06)",
       }}
     >
       <h2
-        className="text-3xl font-bold mb-8 text-center"
+        className="text-3xl font-bold mb-4 text-center"
         style={{ color: theme.headline }}
       >
         🌿 Your Weekend Plan
       </h2>
 
+      {/* ✅ Holiday Awareness Banner */}
+      {status === "succeeded" && weekendDays.length > 2 && (
+        <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-pink-400 to-yellow-300 shadow-md text-center text-white font-semibold">
+          🎉 Long Weekend Alert: {weekendDays.join(" – ")}{" "}
+          {matchingHolidays.length > 0 &&
+            `(${matchingHolidays.map((h) => h.name).join(", ")})`}
+        </div>
+      )}
+
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div
+          className={`
+    grid gap-6
+    grid-cols-1              
+    sm:grid-cols-1          
+    md:grid-cols-2           
+    lg:grid-cols-${weekendDays.length}  
+  `}
+        >
           {weekendDays.map((day) => (
             <DayColumn
               key={day}
@@ -257,6 +290,8 @@ export default function WeekendBoard() {
           ))}
         </div>
       </DndContext>
+
+      <ExportPlanner targetId="planner-export" />
 
       {showModal && selectedActivity && (
         <ScheduleModal

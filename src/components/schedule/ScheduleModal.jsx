@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from "../../theme/useTheme";
+import { useSelector } from "react-redux";
 
 export default function ScheduleModal({ activity, day, onClose, onSave }) {
   const { theme } = useTheme();
+
+  // Retrieve weekend days from Redux Store
+  const weekendDays = useSelector((state) => state.weekend.weekendDays);
 
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -44,7 +48,10 @@ export default function ScheduleModal({ activity, day, onClose, onSave }) {
 
         <div className="space-y-4">
           <div>
-            <label className="text-sm font-medium" style={{ color: theme.body }}>
+            <label
+              className="text-sm font-medium"
+              style={{ color: theme.body }}
+            >
               Day
             </label>
             <select
@@ -52,13 +59,19 @@ export default function ScheduleModal({ activity, day, onClose, onSave }) {
               onChange={(e) => setSelectedDay(e.target.value)}
               className="w-full mt-1 p-3 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
-              <option value="Saturday">Saturday</option>
-              <option value="Sunday">Sunday</option>
+              {weekendDays.map((day, index) => (
+                <option key={index} value={day}>
+                  {day}
+                </option>
+              ))}
             </select>
           </div>
 
           <div>
-            <label className="text-sm font-medium" style={{ color: theme.body }}>
+            <label
+              className="text-sm font-medium"
+              style={{ color: theme.body }}
+            >
               Start Time
             </label>
             <input
@@ -70,7 +83,10 @@ export default function ScheduleModal({ activity, day, onClose, onSave }) {
           </div>
 
           <div>
-            <label className="text-sm font-medium" style={{ color: theme.body }}>
+            <label
+              className="text-sm font-medium"
+              style={{ color: theme.body }}
+            >
               End Time
             </label>
             <input
@@ -82,7 +98,10 @@ export default function ScheduleModal({ activity, day, onClose, onSave }) {
           </div>
 
           <div>
-            <label className="text-sm font-medium" style={{ color: theme.body }}>
+            <label
+              className="text-sm font-medium"
+              style={{ color: theme.body }}
+            >
               Location
             </label>
             <input

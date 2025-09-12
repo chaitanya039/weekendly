@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../../db"; // IndexedDB setup
 
-// 🌀 Async Thunk: Fetch scheduled activities from IndexedDB
+// Async Thunk: Fetch scheduled activities from IndexedDB
 export const fetchScheduledActivities = createAsyncThunk(
   "scheduled/fetch",
   async () => {
@@ -10,17 +10,22 @@ export const fetchScheduledActivities = createAsyncThunk(
   }
 );
 
-// 🌱 Async Thunk: Add a new scheduled activity with validation
+// Async Thunk: Add a new scheduled activity with validation
 export const addScheduledActivity = createAsyncThunk(
   "scheduled/add",
   async (activityData, { getState, rejectWithValue }) => {
-    const { items } = getState().scheduled; // Access existing activities in Redux
+    
+    // Access existing activities in Redux
+    const { items } = getState().scheduled; 
+    
+    // Access weekend days available in Redux
+    const { weekendDays } = getState().weekend;
 
-    // Ensure the activity is scheduled only on Saturday or Sunday
-    const validDays = ["Saturday", "Sunday"];
+    // Ensure the activity is scheduled only Weekends
+    const validDays = weekendDays;
     if (!validDays.includes(activityData.day)) {
       return rejectWithValue(
-        "Invalid day. Activity must be scheduled on Saturday or Sunday."
+        "Invalid day. Activity must be scheduled on Weekends"
       );
     }
 
@@ -47,7 +52,7 @@ export const addScheduledActivity = createAsyncThunk(
   }
 );
 
-// 🗑️ Async Thunk: Delete a scheduled activity
+// Async Thunk: Delete a scheduled activity
 export const deleteScheduledActivity = createAsyncThunk(
   "scheduled/delete",
   async (id) => {
@@ -56,7 +61,7 @@ export const deleteScheduledActivity = createAsyncThunk(
   }
 );
 
-// ✏️ Async Thunk: Update a scheduled activity with validation
+// Async Thunk: Update a scheduled activity with validation
 export const updateScheduledActivity = createAsyncThunk(
   "scheduled/update",
   async (activityData, { getState, rejectWithValue }) => {
@@ -86,7 +91,7 @@ export const updateScheduledActivity = createAsyncThunk(
   }
 );
 
-// 🏷️ Async Thunk: Sort scheduled activities by day and start time
+// Async Thunk: Sort scheduled activities by day and start time
 export const sortScheduledActivities = createAsyncThunk(
   "scheduled/sort",
   async () => {
@@ -106,7 +111,7 @@ export const sortScheduledActivities = createAsyncThunk(
   }
 );
 
-// 🏗️ Async Thunk: Drag and drop update for activities (no time validation)
+// Async Thunk: Drag and drop update for activities (no time validation)
 export const dragAndDropUpdateActivity = createAsyncThunk(
   "scheduled/dragAndDropUpdate",
   async ({ id, newStartTime, newEndTime, newDay }, { getState }) => {
@@ -137,7 +142,7 @@ const scheduledActivitiesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // 🌀 Fetch scheduled activities
+      // Fetch scheduled activities
       .addCase(fetchScheduledActivities.pending, (state) => {
         state.status = "loading";
       })
@@ -150,7 +155,7 @@ const scheduledActivitiesSlice = createSlice({
         state.error = action.payload;
       })
 
-      // 🌱 Add a new scheduled activity
+      // Add a new scheduled activity
       .addCase(addScheduledActivity.fulfilled, (state, action) => {
         state.items.push(action.payload);
       })
@@ -158,14 +163,14 @@ const scheduledActivitiesSlice = createSlice({
         state.error = action.payload;
       })
 
-      // 🗑️ Delete a scheduled activity
+      // Delete a scheduled activity
       .addCase(deleteScheduledActivity.fulfilled, (state, action) => {
         state.items = state.items.filter(
           (activity) => activity.id !== action.payload
         );
       })
 
-      // ✏️ Update a scheduled activity
+      // Update a scheduled activity
       .addCase(updateScheduledActivity.fulfilled, (state, action) => {
         const index = state.items.findIndex(
           (item) => item.id === action.payload.id
@@ -175,12 +180,12 @@ const scheduledActivitiesSlice = createSlice({
         }
       })
 
-      // 🏷️ Sort activities
+      // Sort activities
       .addCase(sortScheduledActivities.fulfilled, (state, action) => {
         state.items = action.payload;
       })
 
-      // 🏗️ Drag and drop update
+      // Drag and drop update
       .addCase(dragAndDropUpdateActivity.fulfilled, (state, action) => {
         const index = state.items.findIndex(
           (item) => item.id === action.payload.id

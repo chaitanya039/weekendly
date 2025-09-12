@@ -1,14 +1,21 @@
+// MoodSelector.jsx
 import React, { useState } from "react";
 
 const moods = [
+  { label: "All", emoji: "🌍" },
   { label: "Happy", emoji: "😊" },
   { label: "Relaxed", emoji: "😌" },
   { label: "Energetic", emoji: "⚡" },
   { label: "Creative", emoji: "🎨" },
 ];
 
-export default function MoodSelector() {
+export default function MoodSelector({ onMoodChange }) {
   const [selectedMood, setSelectedMood] = useState(null);
+
+  const handleSelect = (mood) => {
+    setSelectedMood(mood);
+    onMoodChange(mood === "All" ? null : mood); 
+  };
 
   return (
     <div className="w-full">
@@ -19,8 +26,8 @@ export default function MoodSelector() {
         {moods.map((mood) => (
           <button
             key={mood.label}
-            onClick={() => setSelectedMood(mood.label)}
-            className={`flex cursor-pointer items-center gap-2 px-4 py-2.5 rounded-full text-sm md:text-base font-medium shadow-sm transition-all duration-300
+            onClick={() => handleSelect(mood.label)}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm md:text-base font-medium shadow-sm transition-all duration-300
               ${
                 selectedMood === mood.label
                   ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md scale-105"

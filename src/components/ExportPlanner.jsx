@@ -1,29 +1,32 @@
+// src/components/board/ExportPlanner.jsx
 import React from "react";
-import { useSelector } from "react-redux";
+import { toPng } from "html-to-image";
 
-export default function ExportPlanner() {
-  const scheduledActivities = useSelector((state) => state.scheduledActivities.items);
+export default function ExportPlanner({ targetId }) {
+  const handleExport = async () => {
+    const node = document.getElementById(targetId);
+    if (!node) return;
 
-  const handleExport = () => {
-    const dataStr = JSON.stringify(scheduledActivities, null, 2);
-    const blob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
+    try {
+      const dataUrl = await toPng(node, { cacheBust: true, quality: 1 });
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "my-weekend-plan.json";
-    a.click();
-
-    URL.revokeObjectURL(url);
+      // download as PNG
+      const link = document.createElement("a");
+      link.download = "weekend-plan.png";
+      link.href = dataUrl;
+      link.click();
+    } catch (error) {
+      console.error("Export failed:", error);
+    }
   };
 
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-center mt-10">
       <button
         onClick={handleExport}
-        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+        className="px-6 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-indigo-500 to-purple-500 shadow-lg hover:opacity-90 transition"
       >
-        Export Weekend Plan
+        📤 Export Weekend Plan
       </button>
     </div>
   );

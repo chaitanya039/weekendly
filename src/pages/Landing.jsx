@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/common/Navbar";
 import { useTheme } from "../theme/useTheme";
+import Footer from "../components/common/Footer";
 
 // Small inline component for the bordered pill above the H1
 function TaglinePill({ text, icon = "✈️" }) {
@@ -67,18 +68,11 @@ export default function Landing() {
         />
       </div>
 
-      {/* Top Stripe */}
-      <div
-        className="h-1 w-full"
-        style={{
-          background: `linear-gradient(90deg, ${theme.gradFrom} 0%, ${theme.gradTo} 100%)`,
-        }}
-      />
-
       <Navbar />
 
       {/* Hero Section */}
       <section className="relative w-full overflow-hidden">
+      
         {/* Glow top-left */}
         <div
           className="absolute top-40 left-60 w-[400px] h-[200px] rounded-full blur-3xl opacity-20 pointer-events-none"
@@ -246,8 +240,8 @@ export default function Landing() {
               </a>
 
               {/* Neon button */}
-              <a
-                href="/plan"
+              <Link
+                to="/plan"
                 className="relative rounded-xl font-semibold no-underline"
               >
                 <span
@@ -263,43 +257,15 @@ export default function Landing() {
                 >
                   Start Planning
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer
-        className="mx-auto max-w-7xl px-4 md:px-8 py-10 text-sm"
-        style={{ color: theme.body }}
-      >
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <p>
-            © {new Date().getFullYear()} Weekendly. Built for the Atlan
-            assignment.
-          </p>
-          <nav aria-label="Footer">
-            <ul className="flex gap-6">
-              <li>
-                <a className="hover:opacity-80" href="#">
-                  Privacy
-                </a>
-              </li>
-              <li>
-                <a className="hover:opacity-80" href="#">
-                  Terms
-                </a>
-              </li>
-              <li>
-                <a className="hover:opacity-80" href="#">
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </footer>
+      <Footer />
+      
     </div>
   );
 }
