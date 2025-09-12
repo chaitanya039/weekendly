@@ -20,7 +20,7 @@ Users can explore mood-based activities, schedule them into a weekend timeline, 
 
 ## 🏗️ Architecture
 
-![Architecture Diagram](./assets/architecture.png)
+![Architecture Diagram](./src/assets/architecture.png)
 
 Weekendly is structured around:  
 - **UI Components** – React components for browsing, scheduling, and exporting.  
