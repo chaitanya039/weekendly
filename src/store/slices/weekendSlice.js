@@ -90,4 +90,6 @@ const weekendSlice = createSlice({
   },
 });
 
+
+export { detectWeekendDays };
 export default weekendSlice.reducer;

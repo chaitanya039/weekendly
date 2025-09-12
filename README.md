@@ -1,12 +1,53 @@
-# React + Vite
+# Weekendly (Weekend Planner)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Weekendly is a **web application** that makes weekend planning **effortless, personalized, and engaging**.  
+Users can explore mood-based activities, schedule them into a weekend timeline, reorder them with drag-and-drop, and even extend weekends intelligently with holiday awareness.  
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- **Mood-Based Browsing** – Explore activities by *Adventure, Lazy, Family* moods.  
+- **Scheduling** – Add activities into weekend days with specific times.  
+- **Drag-and-Drop** – Reorder activities seamlessly with auto time recalculation (via `dnd-kit`).  
+- **Holiday Awareness** – Extend weekends with bridging (Thu/Fri/Mon/Tue) using **Calendarific API**.  
+- **Event Discovery** – Discover upcoming events via **Ticketmaster API**.  
+- **Export Plan** – Save weekend plan as a **shareable image** (`html-to-image`).  
+- **Persistence & Offline** – Activities and schedules stored in **IndexedDB**, theme stored in **localStorage**.  
+- **Responsive UX** – Mobile-first design with lazy loading for performance.  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🏗️ Architecture
+
+![Architecture Diagram](./assets/architecture.png)
+
+Weekendly is structured around:  
+- **UI Components** – React components for browsing, scheduling, and exporting.  
+- **State Management** – Redux Toolkit slices: *activities, scheduledActivities, holidays, events, theme*.  
+- **Persistence** – IndexedDB (activities/schedules), localStorage (theme).  
+- **External APIs** – Ticketmaster for events, Calendarific for holidays.  
+
+---
+
+## ⚙️ Tech Stack
+
+- **Frontend**: React (Vite) + TailwindCSS  
+- **State Management**: Redux Toolkit  
+- **Persistence**: IndexedDB, localStorage  
+- **Drag-and-Drop**: dnd-kit  
+- **Exporting**: html-to-image  
+- **APIs**: Ticketmaster API, Calendarific API  
+- **Testing**: Vitest + React Testing Library  
+
+---
+
+## 📦 Installation & Setup
+
+Clone the repository and install dependencies:
+
+```bash
+git clone <your-repo-link>
+cd weekendly
+npm install
+npm run dev
