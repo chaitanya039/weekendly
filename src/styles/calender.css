@@ -1,0 +1,87 @@
+.react-calendar {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600; /* bold font */
+  color: #111827; /* gray-900 */
+  width: 100%;
+}
+
+/* month + year label */
+.react-calendar__navigation__label {
+  font-weight: 700;         /* bold */
+  color: #111827;           /* gray-900 */
+  text-transform: capitalize;
+  background: transparent !important;
+   border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1) !important;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+
+/* navigation bar */
+.react-calendar__navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.react-calendar__navigation button {
+  color: #111827;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.react-calendar__navigation button:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  margin: 0 10px;
+}
+
+/* weekdays header */
+.react-calendar__month-view__weekdays {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 0.5rem;
+}
+
+/* tiles (days) */
+.react-calendar__tile {
+  padding: 0.75rem 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+  font-size: 14px !important;
+}
+
+.react-calendar__tile:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  cursor: pointer;
+}
+
+/* today */
+.react-calendar__tile--now {
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #111827;
+  font-weight: 700;
+}
+
+/* selected day */
+.react-calendar__tile--active {
+  background: linear-gradient(135deg, #4f46e5, #9333ea) !important;
+  color: white !important;
+  border-radius: 6px;
+  font-weight: 700;
+}
