@@ -22,5 +22,4 @@ const ThemeProvider = ({ children }) => {
   );
 }
 
-export { ThemeCtx };
-export default ThemeProvider;
+export { ThemeCtx, ThemeProvider };
