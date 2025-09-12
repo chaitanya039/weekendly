@@ -1,15 +1,14 @@
-// src/components/holiday/HolidayCalendar.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useTheme } from "../theme/useTheme"; // ✅ hook for current theme
+import { useTheme } from "../theme/useTheme"; 
 import dayjs from "dayjs";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../styles/calender.css";
 
-export default function HolidayCalendar() {
+const HolidayCalendar = () => {
   const { holidays, status } = useSelector((state) => state.weekend);
-  const { theme } = useTheme(); // 🎨 inject active theme
+  const { theme } = useTheme(); 
   const [activeMonth, setActiveMonth] = useState(new Date());
   const [visibleMonthHolidays, setVisibleMonthHolidays] = useState([]);
 
@@ -19,7 +18,7 @@ export default function HolidayCalendar() {
     name: h.name,
   }));
 
-  // 🎉 Mark holidays on calendar cells
+  // Mark holidays on calendar cells
   const tileContent = ({ date }) => {
     const holiday = holidayDates.find((h) => dayjs(h.date).isSame(date, "day"));
     if (holiday) {
@@ -36,7 +35,7 @@ export default function HolidayCalendar() {
     return null;
   };
 
-  // 🔄 Recalculate holidays when month changes
+  // Recalculate holidays when month changes
   useEffect(() => {
     if (status !== "succeeded") return;
 
@@ -81,7 +80,7 @@ export default function HolidayCalendar() {
             />
           </div>
 
-          {/* 📝 Monthly holiday list */}
+          {/* Monthly holiday list */}
           <div className="mt-4 text-sm">
             {visibleMonthHolidays.length > 0 ? (
               visibleMonthHolidays.map((h, idx) => (
@@ -108,3 +107,5 @@ export default function HolidayCalendar() {
     </div>
   );
 }
+
+export default HolidayCalendar;

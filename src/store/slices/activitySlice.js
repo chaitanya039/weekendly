@@ -1,29 +1,41 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../../db"; // Adjust path if needed
 
-// 🌀 Async Thunk: Fetch activities from IndexedDB
-export const fetchActivities = createAsyncThunk("activities/fetch", async () => {
-  const activities = await db.activities.toArray();
-  return activities;
-});
+// Async Thunk: Fetch activities from IndexedDB
+export const fetchActivities = createAsyncThunk(
+  "activities/fetch",
+  async () => {
+    const activities = await db.activities.toArray();
+    return activities;
+  }
+);
 
-// 🌱 Async Thunk: Add new activity
-export const addActivity = createAsyncThunk("activities/add", async (activity) => {
-  const id = await db.activities.add(activity);
-  return { ...activity, id }; // IndexedDB returns id if auto-incremented
-});
+// Async Thunk: Add new activity
+export const addActivity = createAsyncThunk(
+  "activities/add",
+  async (activity) => {
+    const id = await db.activities.add(activity);
+    return { ...activity, id }; // IndexedDB returns id if auto-incremented
+  }
+);
 
-// 🗑️ Async Thunk: Delete activity
-export const deleteActivity = createAsyncThunk("activities/delete", async (id) => {
-  await db.activities.delete(id);
-  return id;
-});
+// Async Thunk: Delete activity
+export const deleteActivity = createAsyncThunk(
+  "activities/delete",
+  async (id) => {
+    await db.activities.delete(id);
+    return id;
+  }
+);
 
-// ✏️ Async Thunk: Update activity
-export const updateActivity = createAsyncThunk("activities/update", async (activity) => {
-  await db.activities.put(activity);
-  return activity;
-});
+// Async Thunk: Update activity
+export const updateActivity = createAsyncThunk(
+  "activities/update",
+  async (activity) => {
+    await db.activities.put(activity);
+    return activity;
+  }
+);
 
 const activitySlice = createSlice({
   name: "activities",

@@ -1,7 +1,6 @@
-import React from "react";
 import { useTheme } from "../../theme/useTheme";
 
-export default function ActivityCard({ activity, onClick }) {
+const ActivityCard = ({ activity, onClick }) => {
   const { theme } = useTheme();
 
   const style = {
@@ -28,4 +27,6 @@ export default function ActivityCard({ activity, onClick }) {
       </p>
     </div>
   );
-}
+};
+
+export default ActivityCard;

@@ -1,8 +1,6 @@
-// src/components/board/ExportPlanner.jsx
-import React from "react";
 import { toPng } from "html-to-image";
 
-export default function ExportPlanner({ targetId }) {
+const ExportPlanner = ({ targetId }) => {
   const handleExport = async () => {
     const node = document.getElementById(targetId);
     if (!node) return;
@@ -31,3 +29,5 @@ export default function ExportPlanner({ targetId }) {
     </div>
   );
 }
+
+export default ExportPlanner;

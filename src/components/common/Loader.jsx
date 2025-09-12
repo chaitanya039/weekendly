@@ -1,6 +1,6 @@
 import { useTheme } from "../../theme/useTheme";
 
-export default function Loader({ text = "Loading..." }) {
+const Loader =({ text = "Loading..." }) => {
   const { theme } = useTheme();
 
   return (
@@ -37,3 +37,5 @@ export default function Loader({ text = "Loading..." }) {
     </div>
   );
 }
+
+export default Loader;

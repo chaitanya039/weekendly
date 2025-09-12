@@ -13,7 +13,7 @@ import HolidayCalendar from "../components/HolidayCalender";
 import Footer from "../components/common/Footer";
 import Loader from "../components/common/Loader";
 
-export default function Planner() {
+const Planner = () => {
   const { theme } = useTheme();
   const dispatch = useDispatch();
 
@@ -113,3 +113,5 @@ export default function Planner() {
     </div>
   );
 }
+
+export default Planner;

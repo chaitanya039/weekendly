@@ -14,10 +14,9 @@ export const fetchScheduledActivities = createAsyncThunk(
 export const addScheduledActivity = createAsyncThunk(
   "scheduled/add",
   async (activityData, { getState, rejectWithValue }) => {
-    
     // Access existing activities in Redux
-    const { items } = getState().scheduled; 
-    
+    const { items } = getState().scheduled;
+
     // Access weekend days available in Redux
     const { weekendDays } = getState().weekend;
 

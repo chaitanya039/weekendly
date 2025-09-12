@@ -3,7 +3,7 @@ import { THEMES } from "./themes";
 
 const ThemeCtx = createContext(null);
 
-export function ThemeProvider({ children }) {
+const ThemeProvider = ({ children }) => {
   const [themeKey, setThemeKey] = useState(
     () => localStorage.getItem("weekendly.theme") || "family"
   );
@@ -23,3 +23,4 @@ export function ThemeProvider({ children }) {
 }
 
 export { ThemeCtx };
+export default ThemeProvider;

@@ -1,7 +1,7 @@
 import { useTheme } from "../theme/useTheme";
 import { THEMES } from "../theme/themes";
 
-export default function ThemeToggle() {
+const ThemeToggle = () => {
   const { themeKey, setThemeKey } = useTheme();
   return (
     <div className="flex items-center gap-2">
@@ -29,3 +29,5 @@ export default function ThemeToggle() {
     </div>
   );
 }
+
+export default ThemeToggle;

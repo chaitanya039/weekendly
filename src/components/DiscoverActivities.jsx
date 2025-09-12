@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchTicketmasterEvents } from "../store/slices/ticketmasterSlice";
 import { useTheme } from "../theme/useTheme";
 
-export default function DiscoverActivities() {
+const DiscoverActivities = () => {
   const dispatch = useDispatch();
   const { theme } = useTheme();
   const events = useSelector((state) => state.ticketmaster.items);
@@ -78,3 +78,6 @@ export default function DiscoverActivities() {
     </div>
   );
 }
+
+
+export default DiscoverActivities;

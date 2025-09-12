@@ -1,5 +1,4 @@
-// MoodSelector.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 
 const moods = [
   { label: "All", emoji: "🌍" },
@@ -9,7 +8,7 @@ const moods = [
   { label: "Creative", emoji: "🎨" },
 ];
 
-export default function MoodSelector({ onMoodChange }) {
+const MoodSelector = ({ onMoodChange }) => {
   const [selectedMood, setSelectedMood] = useState(null);
 
   const handleSelect = (mood) => {
@@ -42,3 +41,5 @@ export default function MoodSelector({ onMoodChange }) {
     </div>
   );
 }
+
+export default MoodSelector;

@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/common/Navbar";
 import { useTheme } from "../theme/useTheme";
 import Footer from "../components/common/Footer";
-import { heroImages } from "../utils/HeroImages";
 
 
 // Small inline component for the bordered pill above the H1
@@ -44,10 +43,6 @@ const Landing = () => {
     },
   ];
   
-  const imageKey = `/src/assets/${theme.hero}.png`;
-  const imageSrc = heroImages[imageKey]?.default;
-  
-
   return (
     <div
       className="min-h-screen text-slate-800 relative"
@@ -160,7 +155,7 @@ const Landing = () => {
           {/* Right: Hero PNG */}
           <div className="flex-1 flex justify-center md:justify-end relative">
             <img
-              src={imageSrc}
+              src={`/hero/${theme.hero}`}
               alt={`${theme.label} hero`}
               className="w-full max-w-[600px] h-auto object-contain relative z-10"
               style={{ borderRadius: 0, background: "transparent" }}

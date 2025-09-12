@@ -9,7 +9,7 @@ export const THEMES = {
     body: "#424242",
     btnBg: "#E65100",
     btnText: "#FFFFFF",
-    hero: "../src/assets/hero-family.png",
+    hero: "hero-family.png",
     glowFrom: "#FF5722",
     glowTo: "#FF9800",
     circleColor: "#FFB74D", // Glow circle color for the Family theme
@@ -24,7 +24,7 @@ export const THEMES = {
     body: "#424242",
     btnBg: "#2E7D32",
     btnText: "#FFFFFF",
-    hero: "../src/assets/hero-adventure.png",
+    hero: "hero-adventure.png",
     glowFrom: "#66BB6A",
     glowTo: "#388E3C",
     circleColor: "#4CAF50", // Glow circle color for the Adventure theme
@@ -39,7 +39,7 @@ export const THEMES = {
     body: "#424242",
     btnBg: "#0277BD",
     btnText: "#FFFFFF",
-    hero: "../src/assets/hero-lazy.png",
+    hero: "hero-lazy.png",
     glowFrom: "#03A9F4",
     glowTo: "#0288D1",
     circleColor: "#4FC3F7", // Glow circle color for the Lazy theme

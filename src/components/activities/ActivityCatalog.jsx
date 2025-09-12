@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchActivities } from "../../store/slices/activitySlice";
 import ActivityCard from "./ActivityCard";
 import AddActivityModal from "./AddActivityModal";
 import { useTheme } from "../../theme/useTheme";
 
-// ActivityCatalog.jsx
-export default function ActivityCatalog({ onActivityClick, mood }) {
+const ActivityCatalog = ({ onActivityClick, mood }) => {
   const dispatch = useDispatch();
   const { theme } = useTheme();
   const activities = useSelector((state) => state.activities.items);
@@ -68,3 +67,5 @@ export default function ActivityCatalog({ onActivityClick, mood }) {
     </div>
   );
 }
+
+export default ActivityCatalog;

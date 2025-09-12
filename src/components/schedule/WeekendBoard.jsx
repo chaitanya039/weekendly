@@ -1,5 +1,4 @@
-// src/components/board/WeekendBoard.jsx
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "../../theme/useTheme";
 import {
@@ -26,7 +25,7 @@ import { fetchActivities } from "../../store/slices/activitySlice";
 import { fetchHolidays } from "../../store/slices/weekendSlice";
 import ExportPlanner from "../ExportPlanner";
 
-// 📌 Column for each day
+// Column for each day
 function DayColumn({
   day,
   theme,
@@ -92,14 +91,14 @@ function DayColumn({
   );
 }
 
-export default function WeekendBoard() {
+const WeekendBoard = () => {
   const { theme } = useTheme();
   const dispatch = useDispatch();
 
   const scheduledActivities = useSelector((state) => state.scheduled.items);
   const activities = useSelector((state) => state.activities.items);
 
-  // ✅ Get weekend + holiday data from Redux
+  // Get weekend + holiday data from Redux
   const { weekendDays, holidays, status } = useSelector(
     (state) => state.weekend
   );
@@ -107,11 +106,12 @@ export default function WeekendBoard() {
   const [showModal, setShowModal] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState(null);
 
+  // It is used for drag and drop
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
 
-  // Group scheduled activities by day
+  // Group scheduled activities by day, cache it to avoid recalculation
   const groupedByDay = useMemo(() => {
     return weekendDays.reduce((acc, day) => {
       acc[day] = scheduledActivities
@@ -128,7 +128,7 @@ export default function WeekendBoard() {
     dispatch(fetchHolidays({ countryCode: "IN", year: 2025 }));
   }, [dispatch]);
 
-  // ✅ Helper: detect which holidays fall in this weekend
+  // Detect which holidays fall in this weekend
   const matchingHolidays = useMemo(() => {
     if (!holidays?.length) return [];
     return holidays.filter((h) => {
@@ -258,7 +258,7 @@ export default function WeekendBoard() {
         🌿 Your Weekend Plan
       </h2>
 
-      {/* ✅ Holiday Awareness Banner */}
+      {/* Holiday Awareness Banner */}
       {status === "succeeded" && weekendDays.length > 2 && (
         <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-pink-400 to-yellow-300 shadow-md text-center text-white font-semibold">
           🎉 Long Weekend Alert: {weekendDays.join(" – ")}{" "}
@@ -303,4 +303,6 @@ export default function WeekendBoard() {
       )}
     </div>
   );
-}
+};
+
+export default WeekendBoard;

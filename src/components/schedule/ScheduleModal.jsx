@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "../../theme/useTheme";
 import { useSelector } from "react-redux";
 
-export default function ScheduleModal({ activity, day, onClose, onSave }) {
+const ScheduleModal = ({ activity, day, onClose, onSave }) => {
   const { theme } = useTheme();
 
   // Retrieve weekend days from Redux Store
@@ -139,3 +139,5 @@ export default function ScheduleModal({ activity, day, onClose, onSave }) {
     </div>
   );
 }
+
+export default ScheduleModal;

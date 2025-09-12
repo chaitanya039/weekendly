@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addActivity } from "../../store/slices/activitySlice";
 import { useTheme } from "../../theme/useTheme";
 
-export default function AddActivityModal({ onClose }) {
+const AddActivityModal = ({ onClose }) => {
   const dispatch = useDispatch();
   const { theme } = useTheme();
 
@@ -113,3 +113,5 @@ export default function AddActivityModal({ onClose }) {
     </div>
   );
 }
+
+export default AddActivityModal;
