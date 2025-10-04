@@ -99,7 +99,7 @@ const WeekendBoard = () => {
   const activities = useSelector((state) => state.activities.items);
 
   // Get weekend + holiday data from Redux
-  const { weekendDays, holidays, status } = useSelector(
+  const { weekendDays, status } = useSelector(
     (state) => state.weekend
   );
 
@@ -127,17 +127,6 @@ const WeekendBoard = () => {
     dispatch(fetchActivities());
     dispatch(fetchHolidays({ countryCode: "IN", year: 2025 }));
   }, [dispatch]);
-
-  // Detect which holidays fall in this weekend
-  const matchingHolidays = useMemo(() => {
-    if (!holidays?.length) return [];
-    return holidays.filter((h) => {
-      const holidayDay = new Date(h.date).toLocaleDateString("en-US", {
-        weekday: "long",
-      });
-      return weekendDays.includes(holidayDay);
-    });
-  }, [holidays, weekendDays]);
 
   // Helpers for drag-and-drop
   const getTargetDayFromOver = (over) => {
@@ -260,10 +249,9 @@ const WeekendBoard = () => {
 
       {/* Holiday Awareness Banner */}
       {status === "succeeded" && weekendDays.length > 2 && (
-        <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-pink-400 to-yellow-300 shadow-md text-center text-white font-semibold">
-          🎉 Long Weekend Alert: {weekendDays.join(" – ")}{" "}
-          {matchingHolidays.length > 0 &&
-            `(${matchingHolidays.map((h) => h.name).join(", ")})`}
+        <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-pink-400 to-yellow-300 shadow-md text-start text-white font-bold">
+          🎉  Long Weekend Alert: {weekendDays.join(" – ")}{" "}
+          
         </div>
       )}
 
@@ -274,7 +262,7 @@ const WeekendBoard = () => {
     grid-cols-1              
     sm:grid-cols-1          
     md:grid-cols-2           
-    lg:grid-cols-${weekendDays.length}  
+    lg:grid-cols-2
   `}
         >
           {weekendDays.map((day) => (

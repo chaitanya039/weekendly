@@ -50,18 +50,48 @@ function detectWeekendDays(holidays) {
     }
 
     // Thursday bridging
-    if (holidayDate.isSame(nextSaturday.subtract(2, "day"), "day")) {
-      if (!weekendDays.includes("Thursday")) weekendDays.unshift("Thursday");
-    }
+    // if (holidayDate.isSame(nextSaturday.subtract(2, "day"), "day")) {
+    //   if (!weekendDays.includes("Thursday")) weekendDays.unshift("Thursday");
+    // }
 
     // Tuesday bridging
-    if (holidayDate.isSame(nextSunday.add(2, "day"), "day")) {
-      if (!weekendDays.includes("Tuesday")) weekendDays.push("Tuesday");
-    }
+    // if (holidayDate.isSame(nextSunday.add(2, "day"), "day")) {
+    //   if (!weekendDays.includes("Tuesday")) weekendDays.push("Tuesday");
+    // }
   });
 
   return weekendDays;
 }
+
+function detectLongWeekend(holidays) {
+  const today = dayjs();
+  const nextSaturday = today.day(6); // Next Saturday
+  const nextSunday = nextSaturday.add(1, "day");
+
+  // Convert holidays into a Set of dayjs dates (for easy checking)
+  const holidaySet = new Set(holidays.map(h => dayjs(h.date).format("YYYY-MM-DD")));
+
+  // Start with Saturday → Sunday
+  let block = [nextSaturday, nextSunday];
+
+  // Extend backward
+  let prev = nextSaturday.subtract(1, "day");
+  while (holidaySet.has(prev.format("YYYY-MM-DD"))) {
+    block.unshift(prev);
+    prev = prev.subtract(1, "day");
+  }
+
+  // Extend forward
+  let next = nextSunday.add(1, "day");
+  while (holidaySet.has(next.format("YYYY-MM-DD"))) {
+    block.push(next);
+    next = next.add(1, "day");
+  }
+
+  // Return names in order (Fri, Sat, Sun, Mon, Tue, …)
+  return block.map(d => d.format("dddd"));
+}
+
 
 const weekendSlice = createSlice({
   name: "weekend",
@@ -81,7 +111,7 @@ const weekendSlice = createSlice({
       .addCase(fetchHolidays.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.holidays = action.payload;
-        state.weekendDays = detectWeekendDays(action.payload);
+        state.weekendDays = detectLongWeekend(action.payload);
       })
       .addCase(fetchHolidays.rejected, (state, action) => {
         state.status = "failed";
