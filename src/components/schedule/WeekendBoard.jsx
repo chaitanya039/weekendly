@@ -9,7 +9,9 @@ import {
 } from "../../store/slices/scheduledActivitiesSlice";
 import {
   DndContext,
+  KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -108,7 +110,9 @@ const WeekendBoard = () => {
 
   // It is used for drag and drop
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor)
   );
 
   // Group scheduled activities by day, cache it to avoid recalculation

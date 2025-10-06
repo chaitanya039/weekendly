@@ -32,7 +32,7 @@ const ScheduledActivityCard = ({ id, activityData, onEdit, onDelete }) => {
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      className="rounded-xl shadow p-3 flex items-start gap-3 border-2 backdrop-blur-sm transition hover:scale-[1.01] hover:cursor-grab"
+      className="rounded-xl touch-none shadow p-3 flex items-start gap-3 border-2 backdrop-blur-sm transition hover:scale-[1.01] hover:cursor-grab"
       style={style}
     >
       <div className="text-3xl">{activity?.icon}</div>
