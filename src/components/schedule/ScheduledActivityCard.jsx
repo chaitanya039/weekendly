@@ -1,6 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Edit, MapPin, Trash2 } from "lucide-react";
+import { Clock, Edit, MapPin, Trash2 } from "lucide-react";
 
 const ScheduledActivityCard = ({ id, activityData, onEdit, onDelete }) => {
   const { activity, startTime, endTime, location } = activityData || {};
@@ -40,14 +40,14 @@ const ScheduledActivityCard = ({ id, activityData, onEdit, onDelete }) => {
       <div className="flex-1">
         <div className="flex justify-between items-center mb-1">
           <h4 className="font-semibold text-gray-800">{activity?.name}</h4>
-          <span
-            className="text-xs font-medium px-2 py-0.5 rounded-full"
+           <span
+            className="text-xs font-medium px-2 py-0.5 rounded-full flex items-center gap-1"
             style={{
               backgroundColor: activity?.color ?? "#999",
               color: "#FFF",
             }}
           >
-            {startTime} - {endTime}
+            <Clock className="w-3 h-3" /> {startTime} - {endTime}
           </span>
         </div>
 

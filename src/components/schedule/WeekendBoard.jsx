@@ -8,6 +8,7 @@ import {
   updateScheduledActivity,
 } from "../../store/slices/scheduledActivitiesSlice";
 import {
+  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
@@ -17,8 +18,7 @@ import {
 } from "@dnd-kit/core";
 import {
   SortableContext,
-  verticalListSortingStrategy,
-  arrayMove,
+  verticalListSortingStrategy
 } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
 import ScheduledActivityCard from "./ScheduledActivityCard";
@@ -26,6 +26,7 @@ import ScheduleModal from "./ScheduleModal";
 import { fetchActivities } from "../../store/slices/activitySlice";
 import { fetchHolidays } from "../../store/slices/weekendSlice";
 import ExportPlanner from "../ExportPlanner";
+import { handleDragEnd } from "../../utils/handleDragEnd";
 
 // Column for each day
 function DayColumn({
@@ -101,9 +102,7 @@ const WeekendBoard = () => {
   const activities = useSelector((state) => state.activities.items);
 
   // Get weekend + holiday data from Redux
-  const { weekendDays, status } = useSelector(
-    (state) => state.weekend
-  );
+  const { weekendDays, status } = useSelector((state) => state.weekend);
 
   const [showModal, setShowModal] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState(null);
@@ -132,92 +131,15 @@ const WeekendBoard = () => {
     dispatch(fetchHolidays({ countryCode: "IN", year: 2025 }));
   }, [dispatch]);
 
-  // Helpers for drag-and-drop
-  const getTargetDayFromOver = (over) => {
-    if (!over) return null;
-    if (weekendDays.includes(over.id)) return over.id;
-
-    if (typeof over.id === "string" && over.id.startsWith("activity-")) {
-      const idNum = parseInt(over.id.replace("activity-", ""), 10);
-      const overActivity = scheduledActivities.find((a) => a.id === idNum);
-      if (overActivity) return overActivity.day;
-    }
-
-    return over?.data?.current?.day ?? null;
-  };
-
-  function addMinutes(timeStr, minutesToAdd) {
-    const [hours, minutes] = timeStr.split(":").map(Number);
-    const date = new Date(2000, 0, 1, hours, minutes);
-    date.setMinutes(date.getMinutes() + minutesToAdd);
-    return date.toTimeString().slice(0, 5);
-  }
-
-  function recalcDayTimes(dayActivities, day, dispatch, dayStart = "09:00") {
-    if (!dayActivities.length) return;
-
-    let cursor = dayStart;
-
-    dayActivities.forEach((act) => {
-      const duration =
-        new Date(`2000-01-01T${act.endTime}`) -
-        new Date(`2000-01-01T${act.startTime}`);
-      const minutes = duration / 60000;
-
-      const newStart = cursor;
-      const newEnd = addMinutes(cursor, minutes);
-      cursor = newEnd;
-
-      dispatch(
-        dragAndDropUpdateActivity({
-          id: act.id,
-          newDay: day,
-          newStartTime: newStart,
-          newEndTime: newEnd,
-        })
-      );
+  const onDragEnd = (event) =>
+    handleDragEnd({
+      ...event,
+      scheduledActivities,
+      groupedByDay,
+      weekendDays,
+      dispatch,
+      dragAndDropUpdateActivity,
     });
-  }
-
-  const handleDragEnd = ({ active, over }) => {
-    if (!active || !over || active.id === over.id) return;
-
-    const activeId = parseInt(active.id.replace("activity-", ""), 10);
-    const overId = parseInt(over.id.replace("activity-", ""), 10);
-
-    const dragged = scheduledActivities.find((a) => a.id === activeId);
-    if (!dragged) return;
-
-    const sourceDay = dragged.day;
-    const targetDay = getTargetDayFromOver(over);
-    if (!targetDay) return;
-
-    let targetActivities = [...groupedByDay[targetDay]];
-
-    if (sourceDay === targetDay) {
-      const oldIndex = targetActivities.findIndex((a) => a.id === activeId);
-      const newIndex = targetActivities.findIndex((a) => a.id === overId);
-
-      if (oldIndex !== -1 && newIndex !== -1) {
-        targetActivities = arrayMove(targetActivities, oldIndex, newIndex);
-      }
-    } else {
-      const sourceActivities = groupedByDay[sourceDay].filter(
-        (a) => a.id !== activeId
-      );
-
-      const insertIndex = targetActivities.findIndex((a) => a.id === overId);
-      targetActivities.splice(
-        insertIndex >= 0 ? insertIndex : targetActivities.length,
-        0,
-        { ...dragged, day: targetDay }
-      );
-
-      recalcDayTimes(sourceActivities, sourceDay, dispatch);
-    }
-
-    recalcDayTimes(targetActivities, targetDay, dispatch);
-  };
 
   const handleDeleteActivity = (id) => {
     dispatch(deleteScheduledActivity(id));
@@ -254,12 +176,15 @@ const WeekendBoard = () => {
       {/* Holiday Awareness Banner */}
       {status === "succeeded" && weekendDays.length > 2 && (
         <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-pink-400 to-yellow-300 shadow-md text-start text-white font-bold">
-          🎉  Long Weekend Alert: {weekendDays.join(" – ")}{" "}
-          
+          🎉 Long Weekend Alert: {weekendDays.join(" – ")}{" "}
         </div>
       )}
 
-      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+      <DndContext
+        collisionDetection={closestCenter}
+        sensors={sensors}
+        onDragEnd={onDragEnd}
+      >
         <div
           className={`
     grid gap-6
