@@ -29,7 +29,7 @@ const DiscoverActivities = () => {
 
   return (
     <div
-      className="relative py-8 px-6 rounded-3xl overflow-hidden shadow-lg"
+      className="relative md:px-6 md:py-8 py-5 px-4 rounded-3xl overflow-hidden shadow-lg"
       style={{
         background: `linear-gradient(135deg, ${theme.glowFrom}33, ${theme.glowTo}33)`,
         backdropFilter: "blur(18px)",

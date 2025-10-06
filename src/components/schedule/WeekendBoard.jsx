@@ -45,7 +45,7 @@ function DayColumn({
   return (
     <div
       ref={setNodeRef}
-      className={`rounded-2xl p-5 transition-all duration-300 bg-white/70 shadow-md backdrop-blur-md ${
+      className={`rounded-2xl p-4 md:p-5 transition-all duration-300 bg-white/70 shadow-md backdrop-blur-md ${
         isOver ? "ring-2 ring-blue-400" : ""
       }`}
     >
@@ -157,7 +157,7 @@ const WeekendBoard = () => {
 
   return (
     <div
-      className="p-8 rounded-3xl transition-all"
+      className="md:px-8 md:py-8 py-5 px-4 rounded-3xl transition-all"
       id="planner-export"
       style={{
         background: `radial-gradient(circle at center, ${theme.circleColor}55, ${theme.glowFrom}22, ${theme.glowTo}11)`,
@@ -175,7 +175,7 @@ const WeekendBoard = () => {
 
       {/* Holiday Awareness Banner */}
       {status === "succeeded" && weekendDays.length > 2 && (
-        <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-pink-400 to-yellow-300 shadow-md text-start text-white font-bold">
+        <div className="mb-6 px-3 py-2 rounded-xl bg-gradient-to-r from-pink-400 to-yellow-300 shadow-md text-start text-white font-bold">
           🎉 Long Weekend Alert: {weekendDays.join(" – ")}{" "}
         </div>
       )}
