@@ -76,6 +76,7 @@ function detectLongWeekend(holidays) {
 
   // Extend backward
   let prev = nextSaturday.subtract(1, "day");
+  // We loop till we found, previous day as holiday
   while (holidaySet.has(prev.format("YYYY-MM-DD"))) {
     block.unshift(prev);
     prev = prev.subtract(1, "day");

@@ -41,6 +41,7 @@ export const addScheduledActivity = createAsyncThunk(
     );
 
     if (overlap) {
+      alert("Time getting overlapped!");
       return rejectWithValue(
         "Time conflict detected. Please choose a different time."
       );
